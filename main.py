@@ -9,9 +9,11 @@ _, aux1 = vid.read()
 aux2 = cv.cvtColor(aux1, cv.COLOR_BGR2GRAY)
 avg = np.float32(aux2)
 
+krnl = np.ones((5,5),np.uint8)
+
 while(vid.isOpened()):
     ret, frame = vid.read()
-    if (ret == False) or (cv.waitKey(1) == 27):
+    if (ret == False) or (cv.waitKey(17) == 27):
         break
 
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -19,9 +21,13 @@ while(vid.isOpened()):
     cv.accumulateWeighted(gray, avg, a)
     out = cv.convertScaleAbs(avg)
 
+    diff = cv.absdiff(gray, out)
+    _,diff = cv.threshold(diff,20,255,cv.THRESH_BINARY)
+    dilate = cv.dilate(diff, krnl, iterations = 1)
+
     cv.imshow('Grayscale',gray)
     cv.imshow('Average',out)
-    cv.imshow('Test', (gray - out))
+    cv.imshow('No BG', dilate)
 
 
 vid.release()
