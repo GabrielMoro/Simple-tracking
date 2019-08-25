@@ -25,13 +25,12 @@ while(vid.isOpened()):
     _,diff = cv.threshold(diff,20,255,cv.THRESH_BINARY)
     dilate = cv.dilate(diff, krnl, iterations = 1)
 
-    contours, _ = cv.findContours(dilate, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
+    contours, h = cv.findContours(dilate, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     cv.drawContours(gray, contours, -1, (0, 255, 0), 3)
     
     cv.imshow('Grayscale',gray)
     cv.imshow('Average',out)
     cv.imshow('No BG', dilate)
-
 
 
 vid.release()
