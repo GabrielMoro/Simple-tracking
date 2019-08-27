@@ -24,12 +24,10 @@ while(vid.isOpened()):
     diff = cv.absdiff(gray, out)
     _,diff = cv.threshold(diff,20,255,cv.THRESH_BINARY)
     
-    noBG = cv.erode(diff, krnl, iterations = 1)
-    noBG = cv.dilate(noBG, krnl, iterations = 1)
-    
-    #dilate = cv.morphologyEx(cv.morphologyEx(diff, cv.MORPH_OPEN, krnl), cv.MORPH_CLOSE, krnl)
+    noBG = cv.dilate(diff, krnl, iterations = 2)
+    noBG = cv.erode(noBG, krnl, iterations = 2)
 
-    contours, h = cv.findContours(noBG, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contours, hs = cv.findContours(noBG, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     cv.drawContours(gray, contours, -1, (0, 255, 0), 3)
     
     cv.imshow('Grayscale',gray)
