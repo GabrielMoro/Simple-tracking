@@ -38,9 +38,9 @@ while(vid.isOpened()):
         x, y, w, h = rect
         if(w < 45 or w > 120 or h < 45):
             continue
-        cv.rectangle(gray, (x, y), (x+w, y+h), (0, 255, 0), 2)   
+        cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-    cv.imshow('Grayscale',gray)
+    cv.imshow('Video',frame)
     cv.imshow('Average',out)
     cv.imshow('No BG', noBG)
 
