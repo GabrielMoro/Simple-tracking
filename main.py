@@ -13,7 +13,7 @@ krnl = np.ones((3,3),np.uint8)
 
 while(vid.isOpened()):
     ret, frame = vid.read()
-    if (ret == False) or (cv.waitKey(10) == 27):
+    if (ret == False) or (cv.waitKey(7) == 27):
         break
 
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -21,18 +21,23 @@ while(vid.isOpened()):
     cv.accumulateWeighted(gray, avg, a)
     out = cv.convertScaleAbs(avg)
 
+    # Background removal
     diff = cv.absdiff(gray, out)
     _, diff = cv.threshold(diff,22,255,cv.THRESH_BINARY)
     
-    noBG = cv.erode(diff, krnl, iterations = 1)
-    noBG = cv.dilate(noBG, krnl, iterations = 2)
+    # Morphology
+    noBG = cv.erode(diff, krnl, iterations = 2)
+    noBG = cv.dilate(noBG, krnl, iterations = 6)
+    noBG = cv.erode(noBG, krnl, iterations = 5)
+    noBG = cv.dilate(noBG, krnl, iterations = 14)
 
     contours, hs = cv.findContours(noBG, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-    # cv.drawContours(gray, contours, -1, (0, 255, 0), 3)
 
     for c in contours:
         rect = cv.boundingRect(c)
         x, y, w, h = rect
+        if(w < 45 or w > 120 or h < 45):
+            continue
         cv.rectangle(gray, (x, y), (x+w, y+h), (0, 255, 0), 2)   
 
     cv.imshow('Grayscale',gray)
