@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-a = 0.05
+a = 0.001
 
 vid = cv.VideoCapture('vid/WalkByShop1front.mpg')
 
@@ -13,7 +13,7 @@ krnl = np.ones((5,5),np.uint8)
 
 while(vid.isOpened()):
     ret, frame = vid.read()
-    if (ret == False) or (cv.waitKey(10) == 27):
+    if (ret == False) or (cv.waitKey(17) == 27):
         break
 
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
