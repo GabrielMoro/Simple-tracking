@@ -33,10 +33,12 @@ while(vid.isOpened()):
         noBG = cv.erode(noBG, krnl, iterations = 5)
         noBG = cv.dilate(noBG, krnl, iterations = 14)
 
+        # Drawing a rectangle
         x, y, w, h = cv.boundingRect(noBG)
         if(w > 45 and w < 120 and h > 45):
             cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)        
 
+        # Showing and saving the video
         cv.imshow('Video',frame)
         out.write(frame)
         cv.imshow('Average',bg)
