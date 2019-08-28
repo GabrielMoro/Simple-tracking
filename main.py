@@ -33,15 +33,9 @@ while(vid.isOpened()):
         noBG = cv.erode(noBG, krnl, iterations = 5)
         noBG = cv.dilate(noBG, krnl, iterations = 14)
 
-        contours, hs = cv.findContours(noBG, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-
-        for c in contours:
-            rect = cv.boundingRect(c)
-            x, y, w, h = rect
-            if(w < 45 or w > 120 or h < 45):
-                continue
-            cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        
+        x, y, w, h = cv.boundingRect(noBG)
+        if(w > 45 and w < 120 and h > 45):
+            cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)        
 
         cv.imshow('Video',frame)
         out.write(frame)
